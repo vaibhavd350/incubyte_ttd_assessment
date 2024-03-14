@@ -41,5 +41,53 @@ RSpec.describe StringCalculator do
     it "supports multiple delimiters" do
       expect(StringCalculator.calculate("//[*][%]\n1*2%3")).to eq(6)
     end
+
+    it "supports multiple delimiters with length longer than one char" do
+      expect(StringCalculator.calculate("//[**][%%]\n1**2%%3")).to eq(6)
+    end
+
+    it "handles empty input with delimiter definition" do
+      expect(StringCalculator.calculate("//[**][%%]\n")).to eq(0)
+    end
+
+    it "handles single number input with delimiter definition" do
+      expect(StringCalculator.calculate("//[**][%%]\n5")).to eq(5)
+    end
+
+    it "handles multiple delimiters with new lines between numbers" do
+      expect(StringCalculator.calculate("//[**][%%][##]\n1**2%%3##4")).to eq(10)
+    end
+
+    it "ignores numbers larger than 1000 with delimiter definition" do
+      expect(StringCalculator.calculate("//[**][%%]\n2**1001%%1002")).to eq(2)
+    end
+
+    it "handles delimiter definition with special characters" do
+      expect(StringCalculator.calculate("//[!!@][#^*]\n1!!@2#^*3")).to eq(6)
+    end
+
+    it "handles large numbers with delimiter definition" do
+      expect(StringCalculator.calculate("//[**][%%]\n1000**1001%%1002")).to eq(1000)
+    end
+
+    it "handles multiple delimiters with special characters" do
+      expect(StringCalculator.calculate("//[!!@][#^*][$$]\n1!!@2#^*3$$4")).to eq(10)
+    end
+
+    it "handles delimiter definition with whitespace" do
+      expect(StringCalculator.calculate("//[ ** ][%%]\n1 ** 2 %% 3")).to eq(6)
+    end
+
+    it "handles delimiter definition with mixed whitespace and characters" do
+      expect(StringCalculator.calculate("//[ ** ][%$%]\n1 ** 2 %$% 3")).to eq(6)
+    end
+
+    it "handles delimiter definition with mixed whitespace and special characters" do
+      expect(StringCalculator.calculate("//[ ** ][%$%]\n1 ** 2 %$% 3")).to eq(6)
+    end
+
+    it "handles large number with delimiter definition with whitespace" do
+      expect(StringCalculator.calculate("//[ ** ][%%]\n1000 ** 1001 %% 1002")).to eq(1000)
+    end
   end
 end
